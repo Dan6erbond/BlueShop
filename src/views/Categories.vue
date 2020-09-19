@@ -8,11 +8,13 @@
       :to="{ name: 'Category', params: { id: category.id } }"
     >
       <b-card
-        :title="category.name"
-        :img-src="randomProduct(category).image.data.thumbnails[5].url"
-        :img-alt="category.name"
+        :title="category.translations[0].name"
+        :img-src="category.image.data.thumbnails[5].url"
+        :img-alt="category.translations[0].name"
         img-top
-      ></b-card>
+      >
+        <b-card-text>{{category.translations[0].description}}</b-card-text>
+      </b-card>
     </router-link>
   </div>
 </template>
@@ -25,17 +27,9 @@ export default {
       categories: [],
     };
   },
-  methods: {
-    randomProduct(category) {
-      var index = Math.floor(Math.random() * category.products.length);
-      return category.products[index];
-    },
-  },
   mounted: function () {
-    this.$client
-      .getItems("categories", {
-        fields: ["*", "products.*", "products.image.*"],
-      })
+    this.$client.api
+      .get("/custom/categories")
       .then((res) => (this.categories = res.data));
   },
 };
@@ -47,9 +41,13 @@ export default {
   min-width: 300px;
   width: 30%;
   transition: all 0.25s ease;
+  color: black;
+  text-decoration: none;
 
   &:hover {
     filter: brightness(0.85);
+    color: black !important;
+    text-decoration: none !important;
   }
 
   img {
