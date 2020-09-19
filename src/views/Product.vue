@@ -7,9 +7,11 @@
       <b-breadcrumb>
         <b-breadcrumb-item to="/categories">Categories</b-breadcrumb-item>
         <b-breadcrumb-item
-          :to="{ name: 'Category', params: { id: product.category_id.id } }"
-        >{{ product.category_id.name }}</b-breadcrumb-item>
-        <b-breadcrumb-item :to=" { name: 'Product', params: { id: product.id } }">{{ product.name }}</b-breadcrumb-item>
+          :to="{ name: 'Category', params: { id: product.category.id } }"
+        >{{ product.category.name }}</b-breadcrumb-item>
+        <b-breadcrumb-item
+          :to=" { name: 'Product', params: { id: product.id } }"
+        >{{ product.translations[0].name }}</b-breadcrumb-item>
       </b-breadcrumb>
       <b-container fluid>
         <b-row class="d-flex justify-content-between align-items-center p-2">
@@ -19,10 +21,14 @@
         <br />
         <b-row>
           <b-col cols="4">
-            <img class="m-auto d-block" :src="product.image.data.full_url" :alt="product.name" />
+            <img
+              class="m-auto d-block"
+              :src="product.image.data.full_url"
+              :alt="product.translations[0].name"
+            />
           </b-col>
           <b-col cols="8">
-            <div v-html="product.description"></div>
+            <div v-html="product.translations[0].description"></div>
           </b-col>
         </b-row>
       </b-container>
@@ -50,7 +56,7 @@ export default {
     fetchProduct() {
       this.$client
         .getItem("products", this.$route.params.id, {
-          fields: ["*", "image.*", "category_id.*"],
+          fields: ["*", "image.*", "category.*", "translations.*"],
         })
         .then((res) => {
           this.product = res.data;
