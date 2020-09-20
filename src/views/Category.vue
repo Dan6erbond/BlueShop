@@ -5,7 +5,7 @@
     </div>
     <div v-else-if="category">
       <b-breadcrumb>
-        <b-breadcrumb-item to="/categories">{{ $t("categories") }}</b-breadcrumb-item>
+        <b-breadcrumb-item :to="{ name: 'categories' }">{{ $t("categories") }}</b-breadcrumb-item>
         <b-breadcrumb-item
           :to="{ name: 'category', params: { id: category.id, name: categoryName } }"
         >{{ categoryName }}</b-breadcrumb-item>
@@ -21,7 +21,9 @@
           :img-alt="getProductName(product)"
           img-top
           class="d-inline-flex"
-        ></b-card>
+        >
+          <b-card-text>{{ getProductDescription(product) | striphtml | medium }}</b-card-text>
+        </b-card>
       </router-link>
     </div>
     <div v-else>
@@ -66,6 +68,13 @@ export default {
         ) || product.translations[0]
       ).name;
     },
+    getProductDescription(product) {
+      return (
+        product.translations.find(
+          (t) => t.language == this.$store.state.locale
+        ) || product.translations[0]
+      ).description;
+    },
     getProductThumbnail: (product) => product.image.data.thumbnails[5].url,
   },
   watch: {
@@ -92,9 +101,13 @@ export default {
   min-width: 300px;
   width: 30%;
   transition: all 0.25s ease;
+  color: black;
+  text-decoration: none;
 
   &:hover {
     filter: brightness(0.85);
+    color: black !important;
+    text-decoration: none !important;
   }
 
   img {

@@ -13,12 +13,12 @@
       >
         <b-card
           :title="getCategoryName(category)"
-          :img-src="category.image.data.thumbnails[5].url"
+          :img-src="category.image && category.image.data.thumbnails[5].url"
           :img-alt="getCategoryName(category)"
           img-top
           class="d-inline-flex"
         >
-          <b-card-text>{{ getCategoryDescription(category) }}</b-card-text>
+          <b-card-text>{{ getCategoryDescription(category) | medium }}</b-card-text>
         </b-card>
       </router-link>
     </div>
@@ -40,6 +40,7 @@ export default {
       ).name;
     },
     getCategoryDescription(category) {
+      console.log(category);
       return (
         category.translations.find(
           (t) => t.language == this.$store.state.locale
