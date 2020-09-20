@@ -1,7 +1,8 @@
 {
-  "productCategories": "Produkt Kategorien",
+  "productCategories": "Produktkategorien",
   "categories": "Kategorien",
   "home": "Startseite",
   "productNotFound": "Dieses Produkt wurde nicht gefunden.",
+  "categoryNotFound": "Diese Kategorie wurde nicht gefunden.",
   "returnTo": "Zurück zur"
 }

@@ -7,13 +7,13 @@
       <b-breadcrumb>
         <b-breadcrumb-item to="/categories">Categories</b-breadcrumb-item>
         <b-breadcrumb-item
-          :to="{ name: 'Category', params: { id: category.id, name: categoryName } }"
+          :to="{ name: 'category', params: { id: category.id, name: categoryName } }"
         >{{ categoryName }}</b-breadcrumb-item>
       </b-breadcrumb>
       <router-link
         v-for="product in products"
         :key="product.id"
-        :to="{ name: 'Product', params: { id: product.id, name: getProductName(product) } }"
+        :to="{ name: 'product', params: { id: product.id, name: getProductName(product) } }"
       >
         <b-card
           :title="getProductName(product)"
@@ -25,10 +25,10 @@
       </router-link>
     </div>
     <div v-else>
-      <b-alert show variant="danger">Category not found.</b-alert>
+      <b-alert show variant="danger">{{ $t("categoryNotFound") }}</b-alert>
       <p>
-        Return to
-        <router-link to="/">Home</router-link>.
+        {{ $t("returnTo") }}
+        <router-link to="/">{{ $t("home") }}</router-link>.
       </p>
     </div>
   </div>
@@ -50,12 +50,22 @@ export default {
       return this.$store.getters.getCategory(this.$route.params.id);
     },
     categoryName() {
-      return this.category.translations[0].name;
+      return (
+        this.category.translations.find(
+          (t) => t.language == this.$store.state.local
+        ) || this.category.translations[0]
+      ).name;
     },
   },
   methods: {
     ...mapActions(["fetchCategories", "fetchProducts"]),
-    getProductName: (product) => product.translations[0].name,
+    getProductName(product) {
+      return (
+        product.translations.find(
+          (t) => t.language == this.$store.state.locale
+        ) || product.translations[0]
+      ).name;
+    },
     getProductThumbnail: (product) => product.image.data.thumbnails[5].url,
   },
   watch: {

@@ -3,5 +3,6 @@
   "categories": "Categories",
   "home": "Home",
   "productNotFound": "Product not found.",
+  "categoryNotFound": "Category not found.",
   "returnTo": "Return to"
 }

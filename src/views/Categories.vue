@@ -9,16 +9,16 @@
       <router-link
         v-for="category in categories"
         :key="category.id"
-        :to="{ name: 'Category', params: { id: category.id, name: getCategoryName(category) } }"
+        :to="{ name: 'category', params: { id: category.id, name: getCategoryName(category) } }"
       >
         <b-card
-          :title="category.translations[0].name"
+          :title="getCategoryName(category)"
           :img-src="category.image.data.thumbnails[5].url"
-          :img-alt="category.translations[0].name"
+          :img-alt="getCategoryName(category)"
           img-top
           class="d-inline-flex"
         >
-          <b-card-text>{{ category.translations[0].description }}</b-card-text>
+          <b-card-text>{{ getCategoryDescription(category) }}</b-card-text>
         </b-card>
       </router-link>
     </div>
@@ -32,7 +32,20 @@ export default {
   name: "Categories",
   methods: {
     ...mapActions(["fetchCategories"]),
-    getCategoryName: (category) => category.translations[0].name,
+    getCategoryName(category) {
+      return (
+        category.translations.find(
+          (t) => t.language == this.$store.state.locale
+        ) || category.translations[0]
+      ).name;
+    },
+    getCategoryDescription(category) {
+      return (
+        category.translations.find(
+          (t) => t.language == this.$store.state.locale
+        ) || category.translations[0]
+      ).description;
+    },
   },
   computed: {
     ...mapState(["categories", "loading"]),

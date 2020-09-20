@@ -5,12 +5,12 @@
     </div>
     <div v-else-if="product" class="product">
       <b-breadcrumb>
-        <b-breadcrumb-item to="/categories">{{ $t("categories") }}</b-breadcrumb-item>
+        <b-breadcrumb-item :to="{ name: 'categories' }">{{ $t("categories") }}</b-breadcrumb-item>
         <b-breadcrumb-item
-          :to="{ name: 'Category', params: { id: product.category.id, name: categoryName } }"
+          :to="{ name: 'category', params: { id: product.category.id, name: categoryName } }"
         >{{ product.category.name }}</b-breadcrumb-item>
         <b-breadcrumb-item
-          :to=" { name: 'Product', params: { id: product.id, name: productName } }"
+          :to=" { name: 'product', params: { id: product.id, name: productName } }"
         >{{ product.translations[0].name }}</b-breadcrumb-item>
       </b-breadcrumb>
       <b-container fluid>
@@ -50,13 +50,26 @@ export default {
       return this.$store.getters.getProduct(this.$route.params.id);
     },
     productName() {
-      return this.product.translations[0].name;
+      console.log(this.product.translations);
+      return (
+        this.product.translations.find(
+          (t) => t.language == this.$store.state.locale
+        ) || this.product.translations[0]
+      ).name;
     },
     productDescription() {
-      return this.product.translations[0].description;
+      return (
+        this.product.translations.find(
+          (t) => t.language == this.$store.state.locale
+        ) || this.product.translations[0]
+      ).description;
     },
     categoryName() {
-      return this.product.category.translations[0].name;
+      return (
+        this.product.category.translations.find(
+          (t) => t.language == this.$store.state.locale
+        ) || this.product.category.translations[0]
+      ).name;
     },
   },
   methods: {

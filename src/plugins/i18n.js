@@ -46,6 +46,7 @@ function checkDefaultLanguage() {
   }
   return matched;
 }
+
 export const selectedLocale =
   checkDefaultLanguage() || process.env.VUE_APP_I18N_LOCALE || "en";
 

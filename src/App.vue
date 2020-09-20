@@ -1,12 +1,24 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">{{ $t("home") }}</router-link>|
-      <router-link to="/categories">{{ $t("categories") }}</router-link>
-    </div>
     <router-view />
   </div>
 </template>
+
+<script>
+import { mapState } from "vuex";
+export default {
+  name: "app",
+  computed: mapState(["locale"]),
+  watch: {
+    locale() {
+      this.$router.replace({ params: { lang: this.locale } }).catch(() => {});
+    },
+  },
+  created() {
+    this.$store.dispatch("changeLocale", this.$store.state.locale);
+  },
+};
+</script>
 
 <style>
 #app {
@@ -14,7 +26,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  padding: 20px;
+  padding: 20px 30px;
 }
 
 ul {
@@ -23,7 +35,7 @@ ul {
 }
 
 #nav {
-  padding: 30px;
+  padding: 30px 10px;
 }
 
 #nav a {

@@ -1,5 +1,7 @@
+import i18n, { selectedLocale } from "@/plugins/i18n";
 import Vue from "vue";
 import Vuex from "vuex";
+import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
 
@@ -8,6 +10,7 @@ export default new Vuex.Store({
     categories: [],
     products: [],
     loading: false,
+    locale: selectedLocale,
   },
   mutations: {
     setLoading(state, { loading }) {
@@ -18,6 +21,9 @@ export default new Vuex.Store({
     },
     addProducts(state, { products }) {
       state.products.push(...products);
+    },
+    updateLocale(state, newLocale) {
+      state.locale = newLocale;
     },
   },
   actions: {
@@ -61,6 +67,10 @@ export default new Vuex.Store({
             });
         });
     },
+    changeLocale({ commit }, newLocale) {
+      i18n.locale = newLocale; // important!
+      commit("updateLocale", newLocale);
+    },
   },
   getters: {
     getCategory: (state) => (id) => {
@@ -75,4 +85,9 @@ export default new Vuex.Store({
       );
     },
   },
+  plugins: [
+    createPersistedState({
+      paths: ["locale"],
+    }),
+  ],
 });
