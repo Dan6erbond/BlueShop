@@ -2,35 +2,43 @@
   <div class="categories">
     <h1>Product Categories</h1>
     <br />
-    <router-link
-      v-for="category in categories"
-      :key="category.id"
-      :to="{ name: 'Category', params: { id: category.id } }"
-    >
-      <b-card
-        :title="category.translations[0].name"
-        :img-src="category.image.data.thumbnails[5].url"
-        :img-alt="category.translations[0].name"
-        img-top
+    <div v-if="loading">
+      <b-spinner class="d-block m-auto" type="grow" label="Spinning"></b-spinner>
+    </div>
+    <div v-else>
+      <router-link
+        v-for="category in categories"
+        :key="category.id"
+        :to="{ name: 'Category', params: { id: category.id, name: getCategoryName(category) } }"
       >
-        <b-card-text>{{category.translations[0].description}}</b-card-text>
-      </b-card>
-    </router-link>
+        <b-card
+          :title="category.translations[0].name"
+          :img-src="category.image.data.thumbnails[5].url"
+          :img-alt="category.translations[0].name"
+          img-top
+          class="d-inline-flex"
+        >
+          <b-card-text>{{ category.translations[0].description }}</b-card-text>
+        </b-card>
+      </router-link>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
+
 export default {
   name: "Categories",
-  data: function () {
-    return {
-      categories: [],
-    };
+  methods: {
+    ...mapActions(["fetchCategories"]),
+    getCategoryName: (category) => category.translations[0].name,
+  },
+  computed: {
+    ...mapState(["categories", "loading"]),
   },
   mounted: function () {
-    this.$client.api
-      .get("/custom/categories")
-      .then((res) => (this.categories = res.data));
+    if (!this.categories.length) this.fetchCategories(this);
   },
 };
 </script>

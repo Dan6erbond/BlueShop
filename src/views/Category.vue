@@ -1,46 +1,77 @@
 <template>
   <div class="category">
-    <div v-if="category">
+    <div v-if="loading">
+      <b-spinner class="d-block m-auto" type="grow" label="Spinning"></b-spinner>
+    </div>
+    <div v-else-if="category">
+      <b-breadcrumb>
+        <b-breadcrumb-item to="/categories">Categories</b-breadcrumb-item>
+        <b-breadcrumb-item
+          :to="{ name: 'Category', params: { id: category.id, name: categoryName } }"
+        >{{ categoryName }}</b-breadcrumb-item>
+      </b-breadcrumb>
       <router-link
-        v-for="product in category.products"
+        v-for="product in products"
         :key="product.id"
-        :to="{ name: 'Product', params: { id: product.id } }"
+        :to="{ name: 'Product', params: { id: product.id, name: getProductName(product) } }"
       >
         <b-card
-          :title="product.name"
-          :img-src="product.image.data.thumbnails[5].url"
-          :img-alt="product.name"
+          :title="getProductName(product)"
+          :img-src="getProductThumbnail(product)"
+          :img-alt="getProductName(product)"
           img-top
+          class="d-inline-flex"
         ></b-card>
       </router-link>
+    </div>
+    <div v-else>
+      <b-alert show variant="danger">Category not found.</b-alert>
+      <p>
+        Return to
+        <router-link to="/">Home</router-link>.
+      </p>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
+
 export default {
   name: "Category",
-  data: function () {
-    return {
-      category: null,
-    };
+  computed: {
+    ...mapState(["categories", "loading"]),
+    products() {
+      return this.category
+        ? this.$store.getters.getProductsByCategory(this.category.id)
+        : [];
+    },
+    category() {
+      return this.$store.getters.getCategory(this.$route.params.id);
+    },
+    categoryName() {
+      return this.category.translations[0].name;
+    },
   },
   methods: {
-    fetchCategory() {
-      this.$client
-        .getItem("categories", this.$route.params.id, {
-          fields: ["*", "products.*", "products.image.*"],
-        })
-        .then((res) => (this.category = res.data));
-    },
+    ...mapActions(["fetchCategories", "fetchProducts"]),
+    getProductName: (product) => product.translations[0].name,
+    getProductThumbnail: (product) => product.image.data.thumbnails[5].url,
   },
   watch: {
     $route() {
-      this.fetchCategory();
+      if (!this.products.length) this.fetchProducts(this, this.category.id);
+    },
+    category: {
+      immediate: true,
+      handler() {
+        if (!this.products.length && this.category)
+          this.fetchProducts(this, this.category.id);
+      },
     },
   },
   mounted: function () {
-    this.fetchCategory();
+    if (!this.categories.length) this.fetchCategories(this);
   },
 };
 </script>

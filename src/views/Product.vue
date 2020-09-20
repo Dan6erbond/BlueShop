@@ -7,28 +7,24 @@
       <b-breadcrumb>
         <b-breadcrumb-item to="/categories">Categories</b-breadcrumb-item>
         <b-breadcrumb-item
-          :to="{ name: 'Category', params: { id: product.category.id } }"
+          :to="{ name: 'Category', params: { id: product.category.id, name: categoryName } }"
         >{{ product.category.name }}</b-breadcrumb-item>
         <b-breadcrumb-item
-          :to=" { name: 'Product', params: { id: product.id } }"
+          :to=" { name: 'Product', params: { id: product.id, name: productName } }"
         >{{ product.translations[0].name }}</b-breadcrumb-item>
       </b-breadcrumb>
       <b-container fluid>
         <b-row class="d-flex justify-content-between align-items-center p-2">
-          <h1>{{ product.name }}</h1>
+          <h1>{{ productName }}</h1>
           <span class="pr-4">{{ product.price | chf }}</span>
         </b-row>
         <br />
         <b-row>
-          <b-col cols="4">
-            <img
-              class="m-auto d-block"
-              :src="product.image.data.full_url"
-              :alt="product.translations[0].name"
-            />
+          <b-col md="4" sm="6" cols="12">
+            <img class="m-auto d-block" :src="product.image.data.full_url" :alt="productName" />
           </b-col>
-          <b-col cols="8">
-            <div v-html="product.translations[0].description"></div>
+          <b-col md="8" sm="6" cols="12">
+            <div v-html="productDescription"></div>
           </b-col>
         </b-row>
       </b-container>
@@ -44,34 +40,36 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
+
 export default {
   name: "Product",
-  data: function () {
-    return {
-      product: null,
-      loading: true,
-    };
+  computed: {
+    ...mapState(["loading"]),
+    product() {
+      return this.$store.getters.getProduct(this.$route.params.id);
+    },
+    productName() {
+      return this.product.translations[0].name;
+    },
+    productDescription() {
+      return this.product.translations[0].description;
+    },
+    categoryName() {
+      return this.product.category.translations[0].name;
+    },
   },
   methods: {
-    fetchProduct() {
-      this.$client
-        .getItem("products", this.$route.params.id, {
-          fields: ["*", "image.*", "category.*", "translations.*"],
-        })
-        .then((res) => {
-          this.product = res.data;
-          this.loading = false;
-        })
-        .catch(() => (this.loading = false));
-    },
+    ...mapActions(["fetchProduct"]),
   },
   watch: {
-    $route() {
-      this.fetchProduct();
+    $route: {
+      immediate: true,
+      handler() {
+        if (!this.product)
+          this.fetchProduct({ vue: this, id: this.$route.params.id });
+      },
     },
-  },
-  mounted: function () {
-    this.fetchProduct();
   },
 };
 </script>
