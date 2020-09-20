@@ -5,7 +5,7 @@
     </div>
     <div v-else-if="category">
       <b-breadcrumb>
-        <b-breadcrumb-item to="/categories">Categories</b-breadcrumb-item>
+        <b-breadcrumb-item to="/categories">{{ $t("categories") }}</b-breadcrumb-item>
         <b-breadcrumb-item
           :to="{ name: 'category', params: { id: category.id, name: categoryName } }"
         >{{ categoryName }}</b-breadcrumb-item>
