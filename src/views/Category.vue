@@ -10,21 +10,24 @@
           :to="{ name: 'category', params: { id: category.id, name: categoryName } }"
         >{{ categoryName }}</b-breadcrumb-item>
       </b-breadcrumb>
-      <router-link
-        v-for="product in products"
-        :key="product.id"
-        :to="{ name: 'product', params: { id: product.id, name: getProductName(product) } }"
-      >
-        <b-card
-          :title="getProductName(product)"
-          :img-src="getProductThumbnail(product)"
-          :img-alt="getProductName(product)"
-          img-top
-          class="d-inline-flex"
+      <b-form-slider :value="value"></b-form-slider>
+      <b-card-group deck>
+        <router-link
+          v-for="product in products"
+          :key="product.id"
+          :to="{ name: 'product', params: { id: product.id, name: getProductName(product) } }"
         >
-          <b-card-text>{{ getProductDescription(product) | striphtml | medium }}</b-card-text>
-        </b-card>
-      </router-link>
+          <b-card
+            :title="getProductName(product)"
+            :img-src="getProductThumbnail(product)"
+            :img-alt="getProductName(product)"
+            img-top
+            class="d-inline-flex"
+          >
+            <b-card-text>{{ getProductDescription(product) | striphtml | medium }}</b-card-text>
+          </b-card>
+        </router-link>
+      </b-card-group>
     </div>
     <div v-else>
       <b-alert show variant="danger">{{ $t("categoryNotFound") }}</b-alert>
@@ -41,6 +44,11 @@ import { mapActions, mapState } from "vuex";
 
 export default {
   name: "Category",
+  data() {
+    return {
+      value: 5,
+    };
+  },
   computed: {
     ...mapState(["categories", "loading"]),
     products() {

@@ -6,21 +6,23 @@
       <b-spinner class="d-block m-auto" type="grow" label="Spinning"></b-spinner>
     </div>
     <div v-else>
-      <router-link
-        v-for="category in categories"
-        :key="category.id"
-        :to="{ name: 'category', params: { id: category.id, name: getCategoryName(category) } }"
-      >
-        <b-card
-          :title="getCategoryName(category)"
-          :img-src="category.image && category.image.data.thumbnails[5].url"
-          :img-alt="getCategoryName(category)"
-          img-top
-          class="d-inline-flex"
+      <b-card-group deck>
+        <router-link
+          v-for="category in categories"
+          :key="category.id"
+          :to="{ name: 'category', params: { id: category.id, name: getCategoryName(category) } }"
         >
-          <b-card-text>{{ getCategoryDescription(category) | medium }}</b-card-text>
-        </b-card>
-      </router-link>
+          <b-card
+            :title="getCategoryName(category)"
+            :img-src="category.image && category.image.data.thumbnails[5].url"
+            :img-alt="getCategoryName(category)"
+            img-top
+            class="d-inline-flex"
+          >
+            <b-card-text>{{ getCategoryDescription(category) | medium }}</b-card-text>
+          </b-card>
+        </router-link>
+      </b-card-group>
     </div>
   </div>
 </template>
@@ -40,7 +42,6 @@ export default {
       ).name;
     },
     getCategoryDescription(category) {
-      console.log(category);
       return (
         category.translations.find(
           (t) => t.language == this.$store.state.locale

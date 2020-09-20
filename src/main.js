@@ -3,6 +3,7 @@ import App from "./App.vue";
 import "./plugins/axios";
 import "./plugins/bootstrap-vue";
 import "./plugins/directus";
+import "./plugins/slider";
 import i18n from "./plugins/i18n";
 import router from "./router";
 import store from "./store";

@@ -10,14 +10,20 @@ Vue.filter("chf", function(value) {
 });
 
 Vue.filter("medium", function(value) {
-  if (!value) return;
+  if (!value) return "";
   var count = 35;
   return value.slice(0, count) + (value.length > count ? "..." : "");
 });
 
 Vue.filter("striphtml", function(value) {
+  if (!value) return "";
   var div = document.createElement("div");
   div.innerHTML = value;
   var text = div.textContent || div.innerText || "";
   return text;
+});
+
+Vue.filter("capitalize", function(value) {
+  if (!value) return "";
+  return value.toUpperCase();
 });
