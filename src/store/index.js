@@ -32,7 +32,7 @@ export default new Vuex.Store({
       commit("setLoading", { loading: true });
       vue.$client
         .getItems("products", {
-          fields: ["*", "image.*", "category.*", "translations.*"],
+          fields: ["*", "image.*", "category.*.*", "translations.*"],
           filters: {
             "category.id": {
               eq: categoryId,
@@ -53,6 +53,12 @@ export default new Vuex.Store({
         .then((res) => {
           commit("addProducts", { products: [res.data] });
           commit("setLoading", { loading: false });
+        })
+        .catch((err) => {
+          if (err.code == 203)
+            commit("setLoading", {
+              loading: false,
+            });
         });
     },
   },

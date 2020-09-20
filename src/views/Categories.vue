@@ -1,6 +1,6 @@
 <template>
   <div class="categories">
-    <h1>Product Categories</h1>
+    <h1>{{ $t("productCategories") }}</h1>
     <br />
     <div v-if="loading">
       <b-spinner class="d-block m-auto" type="grow" label="Spinning"></b-spinner>

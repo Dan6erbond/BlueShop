@@ -5,7 +5,7 @@
     </div>
     <div v-else-if="product" class="product">
       <b-breadcrumb>
-        <b-breadcrumb-item to="/categories">Categories</b-breadcrumb-item>
+        <b-breadcrumb-item to="/categories">{{ $t("categories") }}</b-breadcrumb-item>
         <b-breadcrumb-item
           :to="{ name: 'Category', params: { id: product.category.id, name: categoryName } }"
         >{{ product.category.name }}</b-breadcrumb-item>
@@ -30,10 +30,10 @@
       </b-container>
     </div>
     <div v-else>
-      <b-alert show variant="danger">Product not found.</b-alert>
+      <b-alert show variant="danger">{{ $t("productNotFound") }}</b-alert>
       <p>
-        Return to
-        <router-link to="/">Home</router-link>.
+        {{ $t("returnTo") }}
+        <router-link to="/">{{ $t("home") }}</router-link>.
       </p>
     </div>
   </div>
