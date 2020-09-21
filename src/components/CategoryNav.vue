@@ -1,12 +1,17 @@
 <template>
   <div>
-    <b-nav vertical>
-      <b-nav-item
-        v-for="category in categories"
-        :key="category.id"
-        :to="{ name: 'category', params: { id: category.id, name: getCategoryName(category) } }"
-      >{{ getCategoryName(category) }}</b-nav-item>
-    </b-nav>
+    <b-navbar toggleable="lg">
+      <b-navbar-toggle target="category-nav-collapse"></b-navbar-toggle>
+      <b-collapse id="category-nav-collapse" is-nav>
+        <b-nav class="d-block">
+          <b-nav-item
+            v-for="category in categories"
+            :key="category.id"
+            :to="{ name: 'category', params: { id: category.id, name: getCategoryName(category) } }"
+          >{{ getCategoryName(category) }}</b-nav-item>
+        </b-nav>
+      </b-collapse>
+    </b-navbar>
   </div>
 </template>
 
