@@ -13,7 +13,7 @@
       <div class="pb-3 pl-3">
         <span class="pr-4">{{ $t("price") }}</span>
         <b-form-slider
-          :value="sliderValue"
+          :value="priceRange"
           :min="priceMin"
           :max="priceMax"
           @change="adjustPriceSlider"
@@ -58,7 +58,7 @@ export default {
   name: "Category",
   data() {
     return {
-      sliderValue: [10, 5000],
+      priceRange: [10, 5000],
       sortBy: "name",
       sortByOptions: [
         { value: "name", text: this.$t("name") },
@@ -75,7 +75,7 @@ export default {
         : [];
     },
     filteredProducts() {
-      const [minPrice, maxPrice] = this.sliderValue;
+      const [minPrice, maxPrice] = this.priceRange;
 
       let _products = this.products.filter(
         (p) => p.price >= minPrice && p.price <= maxPrice
@@ -139,7 +139,7 @@ export default {
     },
     getProductThumbnail: (product) => product.image.data.thumbnails[5].url,
     adjustPriceSlider({ newValue }) {
-      this.sliderValue = newValue;
+      this.priceRange = newValue;
     },
   },
   watch: {
@@ -154,7 +154,7 @@ export default {
     products: {
       immediate: true,
       handler() {
-        this.sliderValue = [this.priceMin, this.priceMax];
+        this.priceRange = [this.priceMin, this.priceMax];
       },
     },
   },
