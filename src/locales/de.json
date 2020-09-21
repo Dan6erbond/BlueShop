@@ -13,5 +13,16 @@
   "redirecting": "Sie werden bald weitergeleitet...",
   "email": "E-Mail",
   "noAccount": "Sie haben kein Konto?",
-  "register": "Jetz registrieren."
+  "register": "Registrieren",
+  "emailFieldDescription": "Ihre E-Mail wird nicht mit Dritten geteilt.",
+  "address": "Adresse",
+  "enter": "{field} eingeben",
+  "password": "Passwort",
+  "rememberLabel": "Daten speichern",
+  "logIn": "Anmelden",
+  "alreadyHaveAccount": "Ich habe bereits ein Konto.",
+  "confirmation": "{field} Bestätigung",
+  "confirm": "{field} bestätigen",
+  "firstName": "Vorname",
+  "lastName": "Nachname"
 }

@@ -99,6 +99,20 @@ export default new Vuex.Store({
         commit("setUser", { user: null });
       });
     },
+    signUp({ commit }, { vue, firstName, lastName, password, email }) {
+      commit("setLoading", { loading: true });
+      vue.$client.api
+        .post("/custom/user/register", {
+          email,
+          password,
+          firstName,
+          lastName,
+        })
+        .then((res) => {
+          commit("setLoading", { loading: false });
+          commit("setUser", { user: res.data.user });
+        });
+    },
   },
   getters: {
     getCategory: (state) => (id) => {

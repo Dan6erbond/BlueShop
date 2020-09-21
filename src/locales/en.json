@@ -13,5 +13,16 @@
   "redirecting": "Please wait a moment, you are being redirect...",
   "email": "Email",
   "noAccount": "Don't have an account?",
-  "register": "Register."
+  "register": "Register",
+  "emailFieldDescription": "We'll never share your email with anyone else.",
+  "address": "Address",
+  "enter": "Enter {field}",
+  "password": "Password",
+  "rememberLabel": "Remember Me",
+  "logIn": "Log in",
+  "alreadyHaveAccount": "Already have an account?",
+  "confirmation": "{field} Confirmation",
+  "confirm": "Confirm {field}",
+  "firstName": "First Name",
+  "lastName": "Surname"
 }

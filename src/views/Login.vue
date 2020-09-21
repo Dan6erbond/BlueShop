@@ -3,47 +3,50 @@
     <b-form @submit.prevent="submit">
       <b-form-group
         id="input-group-1"
-        label="Email address:"
+        :label="$t('email') + ' ' + $t('address') + ':'"
         label-for="input-1"
-        description="We'll never share your email with anyone else."
+        :description="$t('emailFieldDescription')"
       >
         <b-form-input
           id="input-1"
           v-model="form.email"
           type="email"
           required
-          placeholder="Enter email"
+          :placeholder="$t('enter', {field: $t('email')})"
         ></b-form-input>
       </b-form-group>
 
-      <b-form-group id="input-group-2" label="Your Name:" label-for="input-2">
+      <b-form-group id="input-group-2" :label="$t('password') + ':'" label-for="input-2">
         <b-form-input
           id="input-2"
           v-model="form.password"
           type="password"
           required
-          placeholder="Enter password"
+          :placeholder="$t('enter', {field: $t('password')})"
         ></b-form-input>
       </b-form-group>
 
       <b-form-group id="input-group-4">
-        <b-form-checkbox v-model="form.persist" class="mb-2 mr-sm-2 mb-sm-0">Remember me</b-form-checkbox>
+        <b-form-checkbox
+          v-model="form.persist"
+          class="mb-2 mr-sm-2 mb-sm-0"
+        >{{ $t("rememberLabel") }}</b-form-checkbox>
       </b-form-group>
 
       <span>
         {{ $t("noAccount") }}
-        <router-link :to="{ name: 'register' }">{{ $t("register") }}</router-link>
+        <router-link :to="{ name: 'register' }">{{ $t("register") }}.</router-link>
       </span>
       <br />
       <br />
 
-      <b-button type="submit" variant="primary">Log In</b-button>
+      <b-button type="submit" variant="primary">{{ $t("logIn") }}</b-button>
     </b-form>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 
 export default {
   data: function () {
@@ -59,16 +62,22 @@ export default {
     ...mapState(["user", "redirectPath"]),
   },
   methods: {
+    ...mapMutations(["setRedirectPath"]),
     ...mapActions(["login"]),
     submit() {
       this.login({ vue: this, ...this.form });
     },
   },
   watch: {
-    user() {
-      if (this.user) {
-        this.$router.push(this.redirectPath || { name: "home" });
-      }
+    user: {
+      immediate: true,
+      handler() {
+        if (this.user) {
+          let redirectPath = this.redirectPath;
+          this.setRedirectPath({ path: null });
+          this.$router.push(redirectPath || { name: "home" });
+        }
+      },
     },
   },
 };
