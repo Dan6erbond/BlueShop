@@ -10,7 +10,7 @@
           :to="{ name: 'category', params: { id: category.id, name: categoryName } }"
         >{{ categoryName }}</b-breadcrumb-item>
       </b-breadcrumb>
-      <b-form-slider :value="value"></b-form-slider>
+      <b-form-slider class="pb-3" :value="value"></b-form-slider>
       <b-card-group deck>
         <router-link
           v-for="product in products"
@@ -46,7 +46,7 @@ export default {
   name: "Category",
   data() {
     return {
-      value: 5,
+      value: [5, 10],
     };
   },
   computed: {
