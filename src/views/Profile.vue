@@ -8,13 +8,13 @@
     <b-container class="pl-4 ml-4" fluid>
       <b-row>
         <b-col cols="4">
-          <b>Name</b>
+          <b>{{ $t("name") }}</b>
         </b-col>
         <b-col cols="8">{{ user.first_name }} {{ user.last_name }}</b-col>
       </b-row>
       <b-row>
         <b-col cols="4">
-          <b>Email</b>
+          <b>{{ $t("email") }}</b>
         </b-col>
         <b-col cols="8">{{ user.email }}</b-col>
       </b-row>

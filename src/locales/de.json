@@ -10,5 +10,6 @@
   "priceHigh": "Preis (höchste)",
   "name": "Name",
   "sortBy": "Sortieren nach",
-  "redirecting": "Sie werden bald weitergeleitet..."
+  "redirecting": "Sie werden bald weitergeleitet...",
+  "email": "E-Mail"
 }
