@@ -20,10 +20,10 @@
         </b-row>
         <br />
         <b-row>
-          <b-col md="4" sm="6" cols="12">
-            <img class="m-auto d-block" :src="product.image.data.full_url" :alt="productName" />
+          <b-col lg="4" md="12">
+            <img class="m-auto d-block w-100" :src="product.image.data.full_url" :alt="productName" />
           </b-col>
-          <b-col md="8" sm="6" cols="12">
+          <b-col lg="8" md="12">
             <div v-html="productDescription"></div>
           </b-col>
         </b-row>

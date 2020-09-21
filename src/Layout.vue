@@ -1,12 +1,18 @@
 <template>
   <div>
     <header-nav></header-nav>
-    <div class="d-flex" id="content">
-      <category-nav id="category-nav" class="w-25"></category-nav>
-      <div class="w-75">
-        <router-view />
-      </div>
-    </div>
+    <b-container id="content" fluid>
+      <b-row>
+        <b-col lg="3" md="12">
+          <category-nav id="category-nav"></category-nav>
+        </b-col>
+        <b-col lg="9" md="12">
+          <div>
+            <router-view />
+          </div>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
