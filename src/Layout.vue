@@ -1,46 +1,23 @@
 <template>
   <div>
-    <b-navbar variant="faded" type="light" id="nav">
-      <b-navbar-brand tag="h1" class="mb-0" :to="{ name: 'home' }">BlueShop</b-navbar-brand>
-      <b-collapse id="nav-collapse" is-nav>
-        <b-navbar-nav>
-          <b-nav-item :to="{ name: 'categories' }">{{ $t("categories") }}</b-nav-item>
-        </b-navbar-nav>
-      </b-collapse>
-      <b-navbar-nav class="ml-auto">
-        <b-nav-item-dropdown :text="lang | capitalize" right>
-          <b-dropdown-item
-            v-for="(lang, i) in languageArray"
-            :key="`lang${i}`"
-            @click="selectLang(lang)"
-          >{{ lang | capitalize }}</b-dropdown-item>
-        </b-nav-item-dropdown>
-      </b-navbar-nav>
-    </b-navbar>
-    <div id="content">
-      <router-view />
+    <header-nav></header-nav>
+    <div class="d-flex" id="content">
+      <category-nav id="category-nav" class="w-25"></category-nav>
+      <div class="w-75">
+        <router-view />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { languages } from "@/plugins/i18n";
+import HeaderNav from "@/components/HeaderNav.vue";
+import CategoryNav from "@/components/CategoryNav.vue";
 
 export default {
-  data: function () {
-    return {
-      languageArray: languages,
-    };
-  },
-  computed: {
-    lang() {
-      return this.$store.state.locale;
-    },
-  },
-  methods: {
-    selectLang(lang) {
-      this.$store.dispatch("changeLocale", lang);
-    },
+  components: {
+    HeaderNav: HeaderNav,
+    CategoryNav: CategoryNav,
   },
 };
 </script>
@@ -61,5 +38,9 @@ export default {
 
 #content {
   padding: 30px 10px;
+}
+
+#category-nav {
+  min-width: 300px;
 }
 </style>
