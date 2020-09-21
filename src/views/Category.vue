@@ -143,14 +143,18 @@ export default {
     },
   },
   watch: {
-    $route() {
-      if (!this.products.length) this.fetchProducts(this, this.category.id);
-    },
     category: {
       immediate: true,
+      handler(to, from) {
+        if (to && from && to.id === from.id) return;
+        if (!this.products.length && to && !this.loading)
+          this.fetchProducts({ vue: this, categoryId: to.id });
+      },
+    },
+    products: {
+      immediate: true,
       handler() {
-        if (!this.products.length && this.category)
-          this.fetchProducts(this, this.category.id);
+        this.sliderValue = [this.priceMin, this.priceMax];
       },
     },
   },

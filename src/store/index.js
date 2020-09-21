@@ -34,12 +34,12 @@ export default new Vuex.Store({
         commit("setLoading", { loading: false });
       });
     },
-    fetchProducts({ commit }, vue, categoryId) {
+    fetchProducts({ commit }, { vue, categoryId }) {
       commit("setLoading", { loading: true });
       vue.$client
         .getItems("products", {
           fields: ["*", "image.*", "category.*.*", "translations.*"],
-          filters: {
+          filter: {
             "category.id": {
               eq: categoryId,
             },
