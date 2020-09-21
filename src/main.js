@@ -3,10 +3,11 @@ import App from "./App.vue";
 import "./plugins/axios";
 import "./plugins/bootstrap-vue";
 import "./plugins/directus";
-import "./plugins/slider";
 import i18n from "./plugins/i18n";
+import "./plugins/slider";
 import router from "./router";
 import store from "./store";
+import "./styles/card.scss";
 import "./utils/filters";
 
 Vue.config.productionTip = false;

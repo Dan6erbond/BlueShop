@@ -4,5 +4,10 @@
   "home": "Home",
   "productNotFound": "Product not found.",
   "categoryNotFound": "Category not found.",
-  "returnTo": "Return to"
+  "returnTo": "Return to",
+  "price": "Price",
+  "priceLow": "Price (lowest)",
+  "priceHigh": "Price (highest)",
+  "name": "Name",
+  "sortBy": "Sort by"
 }

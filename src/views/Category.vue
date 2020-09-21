@@ -10,24 +10,36 @@
           :to="{ name: 'category', params: { id: category.id, name: categoryName } }"
         >{{ categoryName }}</b-breadcrumb-item>
       </b-breadcrumb>
-      <b-form-slider class="pb-3" :value="value"></b-form-slider>
-      <b-card-group deck>
-        <router-link
-          v-for="product in products"
-          :key="product.id"
-          :to="{ name: 'product', params: { id: product.id, name: getProductName(product) } }"
-        >
-          <b-card
-            :title="getProductName(product)"
-            :img-src="getProductThumbnail(product)"
-            :img-alt="getProductName(product)"
-            img-top
-            class="d-inline-flex"
-          >
-            <b-card-text>{{ getProductDescription(product) | striphtml | medium }}</b-card-text>
-          </b-card>
-        </router-link>
-      </b-card-group>
+      <div class="pb-3 pl-3">
+        <span class="pr-4">{{ $t("price") }}</span>
+        <b-form-slider
+          :value="sliderValue"
+          :min="priceMin"
+          :max="priceMax"
+          @change="adjustPriceSlider"
+        ></b-form-slider>
+        <span class="px-4">{{ $t("sortBy") }}</span>
+        <b-form-select class="d-inline-block w-auto" v-model="sortBy" :options="sortByOptions"></b-form-select>
+      </div>
+      <b-container fluid>
+        <b-row>
+          <b-col sm="6" cols="12" md="4" v-for="product in filteredProducts" :key="product.id">
+            <router-link
+              :to="{ name: 'product', params: { id: product.id, name: getProductName(product) } }"
+            >
+              <b-card
+                :title="getProductName(product)"
+                :img-src="getProductThumbnail(product)"
+                :img-alt="getProductName(product)"
+                img-top
+                class="d-inline-flex"
+              >
+                <b-card-text>{{ getProductDescription(product) | striphtml | medium }}</b-card-text>
+              </b-card>
+            </router-link>
+          </b-col>
+        </b-row>
+      </b-container>
     </div>
     <div v-else>
       <b-alert show variant="danger">{{ $t("categoryNotFound") }}</b-alert>
@@ -46,7 +58,13 @@ export default {
   name: "Category",
   data() {
     return {
-      value: [5, 10],
+      sliderValue: [10, 5000],
+      sortBy: "name",
+      sortByOptions: [
+        { value: "name", text: this.$t("name") },
+        { value: "priceLow", text: this.$t("priceLow") },
+        { value: "priceHigh", text: this.$t("priceHigh") },
+      ],
     };
   },
   computed: {
@@ -55,6 +73,42 @@ export default {
       return this.category
         ? this.$store.getters.getProductsByCategory(this.category.id)
         : [];
+    },
+    filteredProducts() {
+      const [minPrice, maxPrice] = this.sliderValue;
+
+      let _products = this.products.filter(
+        (p) => p.price >= minPrice && p.price <= maxPrice
+      );
+
+      if (this.sortBy) {
+        switch (this.sortBy) {
+          case "priceHigh":
+            _products = _products.sort((p1, p2) =>
+              p1.price < p2.price ? 1 : p1.price > p2.price ? -1 : 0
+            );
+            break;
+          case "priceLow":
+            _products = _products.sort((p1, p2) =>
+              p1.price > p2.price ? 1 : p1.price < p2.price ? -1 : 0
+            );
+            break;
+          default:
+            _products = _products.sort((p1, p2) => {
+              const p1Name = this.getProductName(p1),
+                p2Name = this.getProductName(p2);
+              return p1Name > p2Name ? 1 : p1Name < p2Name ? -1 : 0;
+            });
+        }
+      }
+
+      return _products;
+    },
+    priceMin() {
+      return Math.min(...this.products.map((p) => p.price));
+    },
+    priceMax() {
+      return Math.max(...this.products.map((p) => p.price));
     },
     category() {
       return this.$store.getters.getCategory(this.$route.params.id);
@@ -84,6 +138,9 @@ export default {
       ).description;
     },
     getProductThumbnail: (product) => product.image.data.thumbnails[5].url,
+    adjustPriceSlider({ newValue }) {
+      this.sliderValue = newValue;
+    },
   },
   watch: {
     $route() {
@@ -102,26 +159,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.card {
-  max-width: 500px;
-  min-width: 300px;
-  width: 30%;
-  transition: all 0.25s ease;
-  color: black;
-  text-decoration: none;
-
-  &:hover {
-    filter: brightness(0.85);
-    color: black !important;
-    text-decoration: none !important;
-  }
-
-  img {
-    max-width: 400px !important;
-    width: 90%;
-    margin: 0 auto;
-  }
-}
-</style>

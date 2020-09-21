@@ -6,23 +6,26 @@
       <b-spinner class="d-block m-auto" type="grow" label="Spinning"></b-spinner>
     </div>
     <div v-else>
-      <b-card-group deck>
-        <router-link
-          v-for="category in categories"
-          :key="category.id"
-          :to="{ name: 'category', params: { id: category.id, name: getCategoryName(category) } }"
-        >
-          <b-card
-            :title="getCategoryName(category)"
-            :img-src="category.image && category.image.data.thumbnails[5].url"
-            :img-alt="getCategoryName(category)"
-            img-top
-            class="d-inline-flex"
-          >
-            <b-card-text>{{ getCategoryDescription(category) | medium }}</b-card-text>
-          </b-card>
-        </router-link>
-      </b-card-group>
+      <b-container fluid>
+        <b-row>
+          <b-col sm="6" cols="12" md="4" v-for="category in categories" :key="category.id">
+            <router-link
+              :to="{ name: 'category', params: { id: category.id, name: getCategoryName(category) } }"
+              class="p-2"
+            >
+              <b-card
+                :title="getCategoryName(category)"
+                :img-src="category.image && category.image.data.thumbnails[5].url"
+                :img-alt="getCategoryName(category)"
+                img-top
+                class="d-inline-flex"
+              >
+                <b-card-text>{{ getCategoryDescription(category) | medium }}</b-card-text>
+              </b-card>
+            </router-link>
+          </b-col>
+        </b-row>
+      </b-container>
     </div>
   </div>
 </template>
@@ -57,26 +60,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.card {
-  max-width: 500px;
-  min-width: 300px;
-  width: 30%;
-  transition: all 0.25s ease;
-  color: black;
-  text-decoration: none;
-
-  &:hover {
-    filter: brightness(0.85);
-    color: black !important;
-    text-decoration: none !important;
-  }
-
-  img {
-    max-width: 400px !important;
-    width: 90%;
-    margin: 0 auto;
-  }
-}
-</style>
