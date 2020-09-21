@@ -30,6 +30,13 @@
         <b-form-checkbox v-model="form.persist" class="mb-2 mr-sm-2 mb-sm-0">Remember me</b-form-checkbox>
       </b-form-group>
 
+      <span>
+        {{ $t("noAccount") }}
+        <router-link :to="{ name: 'register' }">{{ $t("register") }}</router-link>
+      </span>
+      <br />
+      <br />
+
       <b-button type="submit" variant="primary">Log In</b-button>
     </b-form>
   </div>

@@ -11,5 +11,7 @@
   "name": "Name",
   "sortBy": "Sort by",
   "redirecting": "Please wait a moment, you are being redirect...",
-  "email": "Email"
+  "email": "Email",
+  "noAccount": "Don't have an account?",
+  "register": "Register."
 }
