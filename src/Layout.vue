@@ -3,10 +3,10 @@
     <header-nav></header-nav>
     <b-container id="content" fluid>
       <b-row>
-        <b-col lg="3" md="12">
+        <b-col xl="2" lg="3" md="12">
           <category-nav id="category-nav"></category-nav>
         </b-col>
-        <b-col lg="9" md="12">
+        <b-col xl="10" lg="9" md="12">
           <div>
             <router-view />
           </div>
