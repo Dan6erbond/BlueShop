@@ -14,10 +14,10 @@
           @click="selectLang(lang)"
         >{{ lang | capitalize }}</b-dropdown-item>
       </b-nav-item-dropdown>
-      <b-nav-item class="ml-2 h3" :to="{ name: 'profile' }">
+      <b-nav-item v-if="user" class="ml-2 h3" :to="{ name: 'profile' }">
         <b-icon-person-fill></b-icon-person-fill>
       </b-nav-item>
-      <b-nav-item class="ml-2 h3" @click="login">
+      <b-nav-item v-else class="ml-2 h3" :to="{ name: 'login' }" @click="clickLogin">
         <b-icon-door-closed-fill></b-icon-door-closed-fill>
       </b-nav-item>
     </b-navbar-nav>
@@ -26,6 +26,7 @@
 
 <script>
 import { languages } from "@/plugins/i18n";
+import { mapMutations, mapState } from "vuex";
 
 export default {
   data: function () {
@@ -34,24 +35,18 @@ export default {
     };
   },
   computed: {
+    ...mapState(["user"]),
     lang() {
       return this.$store.state.locale;
     },
   },
   methods: {
+    ...mapMutations(["setRedirectPath"]),
     selectLang(lang) {
       this.$store.dispatch("changeLocale", lang);
     },
-    login() {
-      this.$client
-        .login({
-          email: "email",
-          password: "password",
-        })
-        .then((data) => {
-          console.log(data.data.user);
-          this.$client.getMe().then(console.log);
-        });
+    clickLogin() {
+      this.setRedirectPath({ path: this.$route.path });
     },
   },
 };

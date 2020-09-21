@@ -11,6 +11,8 @@ export default new Vuex.Store({
     products: [],
     loading: false,
     locale: selectedLocale,
+    user: null,
+    redirectPath: null,
   },
   mutations: {
     setLoading(state, { loading }) {
@@ -24,6 +26,12 @@ export default new Vuex.Store({
     },
     updateLocale(state, newLocale) {
       state.locale = newLocale;
+    },
+    setUser(state, { user }) {
+      state.user = user;
+    },
+    setRedirectPath(state, { path }) {
+      state.redirectPath = path;
     },
   },
   actions: {
@@ -70,6 +78,18 @@ export default new Vuex.Store({
     changeLocale({ commit }, newLocale) {
       i18n.locale = newLocale; // important!
       commit("updateLocale", newLocale);
+    },
+    login({ commit }, { vue, email, password, persist }) {
+      vue.$client
+        .login({
+          email,
+          password,
+          persist,
+        })
+        .then((res) => {
+          commit("setLoading", { loading: false });
+          commit("setUser", { user: res.data.user });
+        });
     },
   },
   getters: {
