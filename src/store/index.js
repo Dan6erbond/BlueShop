@@ -80,6 +80,7 @@ export default new Vuex.Store({
       commit("updateLocale", newLocale);
     },
     login({ commit }, { vue, email, password, persist }) {
+      commit("setLoading", { loading: true });
       vue.$client
         .login({
           email,
@@ -90,6 +91,13 @@ export default new Vuex.Store({
           commit("setLoading", { loading: false });
           commit("setUser", { user: res.data.user });
         });
+    },
+    logout({ commit }, { vue }) {
+      commit("setLoading", { loading: true });
+      vue.$client.logout().then(() => {
+        commit("setLoading", { loading: false });
+        commit("setUser", { user: null });
+      });
     },
   },
   getters: {

@@ -14,9 +14,14 @@
           @click="selectLang(lang)"
         >{{ lang | capitalize }}</b-dropdown-item>
       </b-nav-item-dropdown>
-      <b-nav-item v-if="user" class="ml-2 h3" :to="{ name: 'profile' }">
-        <b-icon-person-fill></b-icon-person-fill>
-      </b-nav-item>
+      <b-nav-item-dropdown v-if="user" class="ml-2 h3">
+        <template slot="button-content">
+          <router-link :to="{ name: 'profile' }">
+            <b-icon-person-fill></b-icon-person-fill>
+          </router-link>
+        </template>
+        <b-dropdown-item @click="clickLogout">Log Out</b-dropdown-item>
+      </b-nav-item-dropdown>
       <b-nav-item v-else class="ml-2 h3" :to="{ name: 'login' }" @click="clickLogin">
         <b-icon-door-closed-fill></b-icon-door-closed-fill>
       </b-nav-item>
@@ -26,7 +31,7 @@
 
 <script>
 import { languages } from "@/plugins/i18n";
-import { mapMutations, mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 
 export default {
   data: function () {
@@ -42,11 +47,15 @@ export default {
   },
   methods: {
     ...mapMutations(["setRedirectPath"]),
+    ...mapActions(["logout"]),
     selectLang(lang) {
       this.$store.dispatch("changeLocale", lang);
     },
     clickLogin() {
       this.setRedirectPath({ path: this.$route.path });
+    },
+    clickLogout() {
+      this.logout({ vue: this });
     },
   },
 };
