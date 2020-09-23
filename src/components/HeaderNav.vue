@@ -6,7 +6,38 @@
         <b-nav-item :to="{ name: 'categories' }">{{ $t("categories") }}</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
-    <b-navbar-nav class="ml-auto d-flex align-items-center">
+    <b-navbar-nav class="ml-auto d-flex align-items-center w-100">
+      <div class="ml-auto"></div>
+      <b-nav-form class="w-100 px-4" @submit.prevent="searchProduct">
+        <vue-bootstrap-typeahead
+          v-model="query"
+          :data="products"
+          :serializer="getProductName"
+          @hit="selectProduct"
+          placeholder="Find a product"
+        >
+          <template slot="append">
+            <b-button class="my-2 my-sm-0" type="submit">Search</b-button>
+          </template>
+          <template slot="suggestion" slot-scope="{ data, htmlText }">
+            <div class="d-flex align-items-center">
+              <img
+                class="rounded-circle"
+                :src="getProductThumbnail(data)"
+                style="width: 40px; height: 40px;"
+              />
+              <div class="ml-4">
+                <strong>
+                  <span v-html="htmlText"></span>
+                </strong>
+                <br />
+                <span>{{ getProductDescription(data) | striphtml | medium }}</span>
+              </div>
+              <i class="ml-auto fab fa-github-square fa-2x"></i>
+            </div>
+          </template>
+        </vue-bootstrap-typeahead>
+      </b-nav-form>
       <b-nav-item-dropdown :text="lang | capitalize" right>
         <b-dropdown-item
           v-for="(lang, i) in languageArray"
@@ -32,11 +63,18 @@
 <script>
 import { languages } from "@/plugins/i18n";
 import { mapActions, mapMutations, mapState } from "vuex";
+import VueBootstrapTypeahead from "vue-bootstrap-typeahead";
+import _ from "lodash";
 
 export default {
+  components: {
+    VueBootstrapTypeahead,
+  },
   data: function () {
     return {
       languageArray: languages,
+      query: "",
+      products: [],
     };
   },
   computed: {
@@ -44,6 +82,11 @@ export default {
     lang() {
       return this.locale;
     },
+  },
+  watch: {
+    query: _.debounce(function (newQuery) {
+      this.searchProducts(newQuery);
+    }, 250),
   },
   methods: {
     ...mapMutations(["setRedirectPath"]),
@@ -57,6 +100,62 @@ export default {
     clickLogout() {
       this.logout({ vue: this });
     },
+    getProductName(product) {
+      return (
+        product.translations.find((t) => t.language == this.locale) ||
+        product.translations[0]
+      ).name;
+    },
+    getProductDescription(product) {
+      return (
+        product.translations.find((t) => t.language == this.locale) ||
+        product.translations[0]
+      ).description;
+    },
+    getProductThumbnail: (product) => product.image.data.thumbnails[5].url,
+    searchProducts(newQuery) {
+      this.$client
+        .getItems("products", {
+          fields: ["*", "image.*", "category.*.*", "translations.*"],
+          filter: {
+            "translations.name": {
+              contains: newQuery,
+            },
+          },
+        })
+        .then((res) => {
+          this.products = res.data;
+        });
+    },
+    searchProduct() {
+      // TODO: Create search page and route to it.
+      this.$router.push({
+        name: "product",
+        params: {
+          id: this.products[0].id,
+          name: this.getProductName(this.products[0]),
+        },
+      });
+    },
+    selectProduct() {
+      this.$router.push({
+        name: "product",
+        params: {
+          id: this.products[0].id,
+          name: this.getProductName(this.products[0]),
+        },
+      });
+    },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.form-inline {
+  width: 100%;
+
+  div {
+    width: 100%;
+  }
+}
+</style>
