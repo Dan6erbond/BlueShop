@@ -141,12 +141,12 @@ export default {
         },
       });
     },
-    selectProduct() {
+    selectProduct(product) {
       this.$router.push({
         name: "product",
         params: {
-          id: this.products[0].id,
-          name: this.getProductName(this.products[0]),
+          id: product.id,
+          name: this.getProductName(product),
         },
       });
     },
