@@ -24,5 +24,6 @@
   "confirmation": "{field} Confirmation",
   "confirm": "Confirm {field}",
   "firstName": "First Name",
-  "lastName": "Surname"
+  "lastName": "Surname",
+  "errorLoadingHomepage": "Uh oh! An error occured loading the homepage, please contact a site administrator."
 }

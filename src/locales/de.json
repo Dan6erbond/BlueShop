@@ -24,5 +24,6 @@
   "confirmation": "{field} Bestätigung",
   "confirm": "{field} bestätigen",
   "firstName": "Vorname",
-  "lastName": "Nachname"
+  "lastName": "Nachname",
+  "errorLoadingHomepage": "Ein Fehler ist aufgetreten und die Startseite konnte nicht geladen werden. Bitte kontaktieren Sie einen Administrator."
 }

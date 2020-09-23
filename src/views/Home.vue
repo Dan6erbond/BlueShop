@@ -1,6 +1,12 @@
 <template>
   <div class="home">
-    <div v-if="homepage" v-html="bannerText"></div>
+    <div v-if="loading">
+      <b-spinner class="d-block m-auto" type="grow" label="Spinning"></b-spinner>
+    </div>
+    <div v-else-if="homepage" v-html="bannerText"></div>
+    <div v-else>
+      <b-alert show variant="danger">{{ $t("errorLoadingHomepage") }}</b-alert>
+    </div>
   </div>
 </template>
 
