@@ -13,6 +13,7 @@ export default new Vuex.Store({
     locale: selectedLocale,
     user: null,
     redirectPath: null,
+    homepage: null,
   },
   mutations: {
     setLoading(state, { loading }) {
@@ -32,6 +33,9 @@ export default new Vuex.Store({
     },
     setRedirectPath(state, { path }) {
       state.redirectPath = path;
+    },
+    setHomepage(state, { homepage }) {
+      state.homepage = homepage;
     },
   },
   actions: {
@@ -66,6 +70,23 @@ export default new Vuex.Store({
         })
         .then((res) => {
           commit("addProducts", { products: [res.data] });
+          commit("setLoading", { loading: false });
+        })
+        .catch((err) => {
+          if (err.code == 203)
+            commit("setLoading", {
+              loading: false,
+            });
+        });
+    },
+    fetchHomepage({ commit }, { vue }) {
+      commit("setLoading", { loading: true });
+      vue.$client
+        .getItem("homepage", 1, {
+          fields: ["*", "translations.*"],
+        })
+        .then((res) => {
+          commit("setHomepage", { homepage: res.data });
           commit("setLoading", { loading: false });
         })
         .catch((err) => {

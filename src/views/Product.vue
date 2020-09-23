@@ -50,7 +50,6 @@ export default {
       return this.$store.getters.getProduct(this.$route.params.id);
     },
     productName() {
-      console.log(this.product.translations);
       return (
         this.product.translations.find(
           (t) => t.language == this.$store.state.locale
