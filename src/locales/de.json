@@ -25,5 +25,7 @@
   "confirm": "{field} bestätigen",
   "firstName": "Vorname",
   "lastName": "Nachname",
-  "errorLoadingHomepage": "Ein Fehler ist aufgetreten und die Startseite konnte nicht geladen werden. Bitte kontaktieren Sie einen Administrator."
+  "errorLoadingHomepage": "Ein Fehler ist aufgetreten und die Startseite konnte nicht geladen werden. Bitte kontaktieren Sie einen Administrator.",
+  "search": "Suchen",
+  "findAProduct": "Ein Produkt finden"
 }

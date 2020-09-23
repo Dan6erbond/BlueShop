@@ -14,10 +14,10 @@
           :data="products"
           :serializer="getProductName"
           @hit="selectProduct"
-          placeholder="Find a product"
+          :placeholder="$t('findAProduct')"
         >
           <template slot="append">
-            <b-button class="my-2 my-sm-0" type="submit">Search</b-button>
+            <b-button class="my-2 my-sm-0" type="submit">{{ $t("search") }}</b-button>
           </template>
           <template slot="suggestion" slot-scope="{ data, htmlText }">
             <div class="d-flex align-items-center">
@@ -33,7 +33,6 @@
                 <br />
                 <span>{{ getProductDescription(data) | striphtml | medium }}</span>
               </div>
-              <i class="ml-auto fab fa-github-square fa-2x"></i>
             </div>
           </template>
         </vue-bootstrap-typeahead>
@@ -119,6 +118,11 @@ export default {
           fields: ["*", "image.*", "category.*.*", "translations.*"],
           filter: {
             "translations.name": {
+              logical: "or",
+              contains: newQuery,
+            },
+            "translations.description": {
+              logical: "or",
               contains: newQuery,
             },
           },
