@@ -27,5 +27,7 @@
   "lastName": "Surname",
   "errorLoadingHomepage": "Uh oh! An error occured loading the homepage, please contact a site administrator.",
   "search": "Search",
-  "findAProduct": "Find a product"
+  "findAProduct": "Find a product",
+  "yourSearchResults": "Search results for '{search}':",
+  "noSearchResults": "Unfortunately your search '{search}' yielded no items."
 }

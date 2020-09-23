@@ -27,5 +27,7 @@
   "lastName": "Nachname",
   "errorLoadingHomepage": "Ein Fehler ist aufgetreten und die Startseite konnte nicht geladen werden. Bitte kontaktieren Sie einen Administrator.",
   "search": "Suchen",
-  "findAProduct": "Ein Produkt finden"
+  "findAProduct": "Ein Produkt finden",
+  "yourSearchResults": "Suchresultate für '{search}':",
+  "noSearchResults": "Leider wurden keine Werte für die Suche '{search}' gefunden!"
 }

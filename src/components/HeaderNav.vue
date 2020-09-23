@@ -132,14 +132,7 @@ export default {
         });
     },
     searchProduct() {
-      // TODO: Create search page and route to it.
-      this.$router.push({
-        name: "product",
-        params: {
-          id: this.products[0].id,
-          name: this.getProductName(this.products[0]),
-        },
-      });
+      this.$router.push({ name: "search", query: { q: this.query } });
     },
     selectProduct(product) {
       this.$router.push({
