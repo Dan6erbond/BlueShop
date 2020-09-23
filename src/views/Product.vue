@@ -8,10 +8,10 @@
         <b-breadcrumb-item :to="{ name: 'categories' }">{{ $t("categories") }}</b-breadcrumb-item>
         <b-breadcrumb-item
           :to="{ name: 'category', params: { id: product.category.id, name: categoryName } }"
-        >{{ product.category.name }}</b-breadcrumb-item>
+        >{{ categoryName }}</b-breadcrumb-item>
         <b-breadcrumb-item
           :to=" { name: 'product', params: { id: product.id, name: productName } }"
-        >{{ product.translations[0].name }}</b-breadcrumb-item>
+        >{{ productName }}</b-breadcrumb-item>
       </b-breadcrumb>
       <b-container fluid>
         <b-row class="d-flex justify-content-between align-items-center p-2">
