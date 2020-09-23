@@ -39,21 +39,19 @@ export default {
     ...mapActions(["fetchCategories"]),
     getCategoryName(category) {
       return (
-        category.translations.find(
-          (t) => t.language == this.$store.state.locale
-        ) || category.translations[0]
+        category.translations.find((t) => t.language == this.locale) ||
+        category.translations[0]
       ).name;
     },
     getCategoryDescription(category) {
       return (
-        category.translations.find(
-          (t) => t.language == this.$store.state.locale
-        ) || category.translations[0]
+        category.translations.find((t) => t.language == this.locale) ||
+        category.translations[0]
       ).description;
     },
   },
   computed: {
-    ...mapState(["categories", "loading"]),
+    ...mapState(["categories", "loading", "locale"]),
   },
   mounted: function () {
     if (!this.categories.length) this.fetchCategories(this);

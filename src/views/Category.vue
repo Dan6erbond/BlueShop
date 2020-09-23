@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 
 export default {
   name: "Category",
@@ -68,11 +68,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(["categories", "loading"]),
+    ...mapState(["categories", "loading", "locale"]),
+    ...mapGetters(["getProductsByCategory", "getCategory"]),
     products() {
-      return this.category
-        ? this.$store.getters.getProductsByCategory(this.category.id)
-        : [];
+      return this.category ? this.getProductsByCategory(this.category.id) : [];
     },
     filteredProducts() {
       const [minPrice, maxPrice] = this.priceRange;
@@ -111,13 +110,12 @@ export default {
       return Math.max(...this.products.map((p) => p.price));
     },
     category() {
-      return this.$store.getters.getCategory(this.$route.params.id);
+      return this.getCategory(this.$route.params.id);
     },
     categoryName() {
       return (
-        this.category.translations.find(
-          (t) => t.language == this.$store.state.local
-        ) || this.category.translations[0]
+        this.category.translations.find((t) => t.language == this.locale) ||
+        this.category.translations[0]
       ).name;
     },
   },
@@ -125,16 +123,14 @@ export default {
     ...mapActions(["fetchCategories", "fetchProducts"]),
     getProductName(product) {
       return (
-        product.translations.find(
-          (t) => t.language == this.$store.state.locale
-        ) || product.translations[0]
+        product.translations.find((t) => t.language == this.locale) ||
+        product.translations[0]
       ).name;
     },
     getProductDescription(product) {
       return (
-        product.translations.find(
-          (t) => t.language == this.$store.state.locale
-        ) || product.translations[0]
+        product.translations.find((t) => t.language == this.locale) ||
+        product.translations[0]
       ).description;
     },
     getProductThumbnail: (product) => product.image.data.thumbnails[5].url,

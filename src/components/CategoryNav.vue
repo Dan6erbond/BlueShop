@@ -24,14 +24,13 @@ export default {
     ...mapActions(["fetchCategories"]),
     getCategoryName(category) {
       return (
-        category.translations.find(
-          (t) => t.language == this.$store.state.locale
-        ) || category.translations[0]
+        category.translations.find((t) => t.language == this.locale) ||
+        category.translations[0]
       ).name;
     },
   },
   computed: {
-    ...mapState(["categories"]),
+    ...mapState(["categories", "locale"]),
   },
   mounted: function () {
     if (!this.categories.length) this.fetchCategories(this);

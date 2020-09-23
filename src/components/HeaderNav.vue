@@ -40,16 +40,16 @@ export default {
     };
   },
   computed: {
-    ...mapState(["user"]),
+    ...mapState(["user", "locale"]),
     lang() {
-      return this.$store.state.locale;
+      return this.locale;
     },
   },
   methods: {
     ...mapMutations(["setRedirectPath"]),
-    ...mapActions(["logout"]),
+    ...mapActions(["logout", "changeLocale"]),
     selectLang(lang) {
-      this.$store.dispatch("changeLocale", lang);
+      this.changeLocale(lang);
     },
     clickLogin() {
       this.setRedirectPath({ path: this.$route.path });

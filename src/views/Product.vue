@@ -40,33 +40,32 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 
 export default {
   name: "Product",
   computed: {
-    ...mapState(["loading"]),
+    ...mapState(["loading", "locale"]),
+    ...mapGetters(["getProduct"]),
     product() {
-      return this.$store.getters.getProduct(this.$route.params.id);
+      return this.getProduct(this.$route.params.id);
     },
     productName() {
       return (
-        this.product.translations.find(
-          (t) => t.language == this.$store.state.locale
-        ) || this.product.translations[0]
+        this.product.translations.find((t) => t.language == this.locale) ||
+        this.product.translations[0]
       ).name;
     },
     productDescription() {
       return (
-        this.product.translations.find(
-          (t) => t.language == this.$store.state.locale
-        ) || this.product.translations[0]
+        this.product.translations.find((t) => t.language == this.locale) ||
+        this.product.translations[0]
       ).description;
     },
     categoryName() {
       return (
         this.product.category.translations.find(
-          (t) => t.language == this.$store.state.locale
+          (t) => t.language == this.locale
         ) || this.product.category.translations[0]
       ).name;
     },

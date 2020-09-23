@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
   name: "app",
   computed: mapState(["locale"]),
@@ -14,8 +14,11 @@ export default {
       this.$router.replace({ params: { lang: this.locale } }).catch(() => {});
     },
   },
+  methods: {
+    ...mapActions(["changeLocale"]),
+  },
   created() {
-    this.$store.dispatch("changeLocale", this.$store.state.locale);
+    this.changeLocale(this.locale);
   },
 };
 </script>
