@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 const execa = require("execa");
 const fs = require("fs");
+
 (async () => {
   try {
     await execa("git", ["checkout", "build"]);
@@ -13,7 +14,7 @@ const fs = require("fs");
     await execa("git", ["--work-tree", folderName, "commit", "-m", "build"]);
     console.log("Pushing to build...");
     await execa("git", ["push", "origin", "HEAD:build", "--force"]);
-    await execa("rd", ["-r", folderName]);
+    fs.rmdirSync(folderName, { recursive: true });
     await execa("git", ["checkout", "-f", "master"]);
     await execa("git", ["branch", "-D", "build"]);
     console.log("Successfully deployed, check your settings");
