@@ -1,61 +1,73 @@
 <template>
-  <b-navbar variant="faded" type="light" id="nav">
-    <b-navbar-brand tag="h1" class="mb-0" :to="{ name: 'home' }">BlueShop</b-navbar-brand>
-    <b-collapse id="nav-collapse" is-nav>
+  <b-navbar variant="faded" toggleable="lg" type="light" id="nav">
+    <b-navbar-brand tag="h1" class="mb-0" :to="{ name: 'home' }"
+      >BlueShop</b-navbar-brand
+    >
+    <b-navbar-toggle target="header-nav-collapse"></b-navbar-toggle>
+    <b-collapse id="header-nav-collapse" is-nav>
       <b-navbar-nav>
-        <b-nav-item :to="{ name: 'categories' }">{{ $t("categories") }}</b-nav-item>
+        <b-nav-item :to="{ name: 'categories' }">{{
+          $t("categories")
+        }}</b-nav-item>
+      </b-navbar-nav>
+      <b-navbar-nav class="ml-auto d-flex w-100 align-items-lg-center">
+        <b-nav-form class="w-100 px-4" @submit.prevent="searchProduct">
+          <vue-bootstrap-typeahead
+            v-model="query"
+            :data="products"
+            :serializer="getProductName"
+            @hit="selectProduct"
+            :placeholder="$t('findAProduct')"
+          >
+            <template slot="append">
+              <b-button type="submit">{{ $t("search") }}</b-button>
+            </template>
+            <template slot="suggestion" slot-scope="{ data, htmlText }">
+              <div class="d-flex">
+                <img
+                  class="rounded-circle"
+                  :src="getProductThumbnail(data)"
+                  style="width: 40px; height: 40px"
+                />
+                <div class="ml-4">
+                  <strong>
+                    <span v-html="htmlText"></span>
+                  </strong>
+                  <br />
+                  <span>{{
+                    getProductDescription(data) | striphtml | medium
+                  }}</span>
+                </div>
+              </div>
+            </template>
+          </vue-bootstrap-typeahead>
+        </b-nav-form>
+        <b-nav-item-dropdown :text="lang | capitalize" right>
+          <b-dropdown-item
+            v-for="(lang, i) in languageArray"
+            :key="`lang${i}`"
+            @click="selectLang(lang)"
+            >{{ lang | capitalize }}</b-dropdown-item
+          >
+        </b-nav-item-dropdown>
+        <b-nav-item-dropdown v-if="user" class="ml-2 h3">
+          <template slot="button-content">
+            <router-link :to="{ name: 'profile' }">
+              <b-icon-person-fill></b-icon-person-fill>
+            </router-link>
+          </template>
+          <b-dropdown-item @click="clickLogout">Log Out</b-dropdown-item>
+        </b-nav-item-dropdown>
+        <b-nav-item
+          v-else
+          class="ml-2 h3"
+          :to="{ name: 'login' }"
+          @click="clickLogin"
+        >
+          <b-icon-door-closed-fill></b-icon-door-closed-fill>
+        </b-nav-item>
       </b-navbar-nav>
     </b-collapse>
-    <b-navbar-nav class="ml-auto d-flex align-items-center w-100">
-      <div class="ml-auto"></div>
-      <b-nav-form class="w-100 px-4" @submit.prevent="searchProduct">
-        <vue-bootstrap-typeahead
-          v-model="query"
-          :data="products"
-          :serializer="getProductName"
-          @hit="selectProduct"
-          :placeholder="$t('findAProduct')"
-        >
-          <template slot="append">
-            <b-button class="my-2 my-sm-0" type="submit">{{ $t("search") }}</b-button>
-          </template>
-          <template slot="suggestion" slot-scope="{ data, htmlText }">
-            <div class="d-flex align-items-center">
-              <img
-                class="rounded-circle"
-                :src="getProductThumbnail(data)"
-                style="width: 40px; height: 40px;"
-              />
-              <div class="ml-4">
-                <strong>
-                  <span v-html="htmlText"></span>
-                </strong>
-                <br />
-                <span>{{ getProductDescription(data) | striphtml | medium }}</span>
-              </div>
-            </div>
-          </template>
-        </vue-bootstrap-typeahead>
-      </b-nav-form>
-      <b-nav-item-dropdown :text="lang | capitalize" right>
-        <b-dropdown-item
-          v-for="(lang, i) in languageArray"
-          :key="`lang${i}`"
-          @click="selectLang(lang)"
-        >{{ lang | capitalize }}</b-dropdown-item>
-      </b-nav-item-dropdown>
-      <b-nav-item-dropdown v-if="user" class="ml-2 h3">
-        <template slot="button-content">
-          <router-link :to="{ name: 'profile' }">
-            <b-icon-person-fill></b-icon-person-fill>
-          </router-link>
-        </template>
-        <b-dropdown-item @click="clickLogout">Log Out</b-dropdown-item>
-      </b-nav-item-dropdown>
-      <b-nav-item v-else class="ml-2 h3" :to="{ name: 'login' }" @click="clickLogin">
-        <b-icon-door-closed-fill></b-icon-door-closed-fill>
-      </b-nav-item>
-    </b-navbar-nav>
   </b-navbar>
 </template>
 
@@ -153,6 +165,34 @@ export default {
 
   div {
     width: 100%;
+  }
+}
+</style>
+
+<style lang="scss">
+.input-group {
+  .form-control {
+    margin-left: auto;
+    width: auto !important;
+    transition: flex 500ms ease;
+    flex: none;
+
+    &:focus {
+      flex: 1 1 auto;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .form-inline {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+    .input-group {
+      .form-control {
+        flex: 1 1 auto;
+      }
+    }
   }
 }
 </style>
